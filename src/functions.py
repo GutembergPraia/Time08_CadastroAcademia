@@ -92,19 +92,6 @@ def printTable(clientes:list):
   if(len(clientes)):  
     print('-'*50)
     print(f'{"":<13}{"Codigo":<5}{"Valor":>10}')
-    if(len(clientes) == 1):
-      print(f'{"mais alto:":<13}{clientes[0].codigo:>4}{clientes[0]._altura:>11.2f}{"m":<12}')
-      print(f'{"mais baixo:":<13}{clientes[0].codigo:>4}{clientes[0]._altura:>11.2f}{"m":<12}')
-      print(f'{"mais pesado:":<13}{clientes[0].codigo:>4}{clientes[0]._peso:>11.2f}{"kg":<12}')
-      print(f'{"mais leve:":<13}{clientes[0].codigo:>4}{clientes[0]._peso:>11.2f}{"Kg":<12}')
-      print(f'{"mais gordo:":<13}{clientes[0].codigo:>4}{clientes[0].imc:>11.2f}{"kg/m^2":<12}')
-      print(f'{"mais magro:":<13}{clientes[0].codigo:>4}{clientes[0].imc:>11.2f}{"kg/m^2":<12}')
-      print(f'{"media altura:":<13}{clientes[0]._altura:>15.2f}{"m":<12}')
-      print(f'{"media peso:":<13}{clientes[0]._peso:>15.2f}{"kg":<12}')
-
-    else:
-      clientes[[client.altura for client in clientes].index(max(client.altura for client in clientes))].codigo
-
     print(f'{"mais alto:":<13}{clientes[[client.altura for client in clientes].index(max(client.altura for client in clientes))].codigo:>4}{max(client.altura for client in clientes):>11.2f}{"m":<12}')
     print(f'{"mais baixo:":<13}{clientes[[client.altura for client in clientes].index(min(client.altura for client in clientes))].codigo:>4}{min(client.altura for client in clientes):>11.2f}{"m":<12}')
     print(f'{"mais pesado:":<13}{clientes[[client.peso for client in clientes].index(max(client.peso for client in clientes))].codigo:>4}{max(client.peso for client in clientes):>11.2f}{"kg":<12}')
@@ -113,6 +100,6 @@ def printTable(clientes:list):
     print(f'{"mais magro:":<13}{clientes[[client.imc for client in clientes].index(min(client.imc for client in clientes))].codigo:>4}{min(client.imc for client in clientes):>11.2f}{"kg/m^2":<12}')
     print(f'{"media altura:":<13}{sum(client.altura for client in clientes)/len(clientes):>15.2f}{"m":<12}')
     print(f'{"media peso:":<13}{sum(client.peso for client in clientes)/len(clientes):>15.2f}{"kg":<12}')
-    
+
   else:
     print('dados  insuficientes')
