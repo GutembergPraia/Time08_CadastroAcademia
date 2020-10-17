@@ -1,56 +1,31 @@
 from src.functions import *
 
-codigo = list()
-altura = list()
-peso = list()
-imc = list()
+clientes = list()
 
-#função principal
 def main():
-
   while True:
-    
-    cod, codErro = validaNumInt(input("Código do Aluno ou 0 - Sair: "))
-    
-    if(codErro==0):
-      cod, codErro = validaCod(cod,codigo)
+    try:
+      if not 'cliente' in locals():
+        cliente = Cliente(input('Código do aluno ou 0 - Sair: '))
+        verificaCod(cliente,clientes)
+      if not hasattr(cliente, 'altura'):
+        cliente.altura = input('Altura do aluno em metros: ')
+      if not hasattr(cliente, 'peso'):
+        cliente.peso = input('Peso do aluno em kg: ')
 
-    if(cod == 0):
-      break
-    elif(cod>0):
+      clientes.append(cliente)
+      del cliente
 
-      while True:
-        alt, codErro = validaNumFloat(input("Altura metros : "))
-        if(codErro == 0):
-          alt, codErro = validaAlt(alt)
-        if(codErro != 0):
-          printErro(codErro)
-        else:
-          break
-
-      while True:
-        pes, codErro = validaNumFloat(input("Peso : "))
-        if(pes>0 and pes<=450 and codErro == 0):
-          break
-        else:
-          codErro = 6
-          printErro(codErro)
-    
-      imc_temp = pes/(alt*alt)
-
-      valor, codErro = cadastraClient(cod,alt,pes, imc_temp,codigo,altura,peso,imc)
-      if(valor):
-        print("SUCESSO - Usuario Cadastrado")
+    except Exception as erro:
+      if(erro.args[0]==-1):
+        break
+      elif (erro.args[0]==-2):
+        del cliente
+        print('Cliente ja Cadastrado')
       else:
-        printErro(codErro)
-          
-    printErro(codErro)
+        print(erro)
 
-  if(len(codigo)):
-    printTable(codigo, altura, peso, imc)
-  else:
-    codErro = 1
-    printErro(codErro)
-
+  printTable(clientes)
+    
 if __name__ == "__main__":
     main()

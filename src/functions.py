@@ -1,85 +1,85 @@
+class Cliente:
+  #Definindo o creat
+  def __init__(self, codigo):
+    if codigo.isdigit():
+      if(int(codigo) > 0):
+        self.codigo = codigo
+      else:
+        raise ValueError(-1)
+    else:
+      raise ValueError('Codigo deve conter apenas numeros inteiros e possitivos')
+  
+  #Definindo o get altura
+  @property
+  def altura(self):
+    return self._altura
 
-#Imprime o erro encontrado
-def printErro(codErro: int):
+  #Definindo o set altura
+  @altura.setter
+  def altura(self,altura):
+    if(validaNumFloat(altura)):
+      altura = float(altura)
+      if(altura > 0 and altura <= 4):
+        self._altura = altura
+      else:
+        raise ValueError('Altura min: 0.1 max: 4')
+    else:
+      raise ValueError('Apenas numeros flutuantes')
+  
+  #Definindo o get peso
+  @property
+  def peso(self):
+    return self._peso
 
-  listErros = ['sucesso',
-             '!ERRO! - Aplicativo não possui cliente cadastrado',
-             '!ERRO! - Apenas Numeros int e positivos',
-             '!ERRO! - Apenas Numeros float',
-             '!ERRO! - Cliente já cadastrado',
-             '!ERRO! - Altura min: 0.1 max: 4',
-             '!ERRO! - Peso min: 0.1 max:450',
-             '!ERRO! - Codigo de erro invalido',
-             '!ERRO! - Falha na impressão dos valores',
-             '!ERRO! - Falha no cadastro verifique os dados de entrada']
-
-  if(codErro < len(listErros)):
-    print(listErros[codErro])
-    return listErros[codErro]
-  else:
-    print(listErros[6])
-    return listErros[6]
-
-# Verifica se num e um numero inteiro valido
-# entrada: num: string       
-# Return: valor, erro
-# erro: 2 - '!ERRO! - Apenas Numeros int e positivos'
-#       0 - Sucesso
-def validaNumInt(num):
-  if num.isdigit():
-    return int(num),0
-  else:
-    return -1,2
+  #Definindo o set peso
+  @peso.setter
+  def peso(self,peso):
+    if(validaNumFloat(peso)):
+      peso = float(peso)
+      if(peso>0 and peso<=450):
+        self._peso = peso
+      else:
+        raise ValueError('Peso min: 0.1 max:450')
+    else:
+      raise ValueError('Apenas numeros flutuantes')
+  
+  #Definindo o get imc
+  @property
+  def imc(self):
+    if(self.peso > 0 and self.altura > 0):
+      return self.peso/(self.altura**2) 
+    else:
+      raise ValueError('Dados insuficientes para imc')
+    
+  '''
+  def __str__(self):
+    return str(self.__class__) + ": " + str(self.__dict__)
+  '''
 
 # Verifica se num e um numero flutuante valido
 # entrada: num: string     
-# Return: valor, erro
-# erro: 3 - !ERRO! - Apenas Numeros float'    
-#       0 - Sucesso
+# Return: valor 
+#         False 
+# 
 def validaNumFloat(num):
   try:
     num = float(num)
-    return num,0
+    return num  
   except ValueError:
-    return -1,3
+    return False
 
-# verifica de cod e um codigo de cliente valido e se o mesmo esta cadastrado
-# entrada: cod:int
-# Return: valor, erro
-#erro: 4 - Cliente já cadastrado
-def validaCod(cod:int,codigo:list):
-  if(cod in codigo and cod > 0):
-    return -1,4  
-  else:
-    return cod,0
+# verifica se o codigo esta cadastrado
+# entrada: cliente:object, clientes:list
+# Return: True
+#         False 
+#max(node.y for node in path.nodes)
+#2 in testList
+def verificaCod(cliente,clientes:list):
+  for client in clientes:
+    if(client.codigo == cliente.codigo):
+      raise ValueError(-2)
 
-# valida o valor da Altura
-# entrada: alt:float
-# Return: valor, erro
-#erro: 5 - '!ERRO! - Altura min: 0.1 max: 4'
-def validaAlt(alt:float):
-  if(alt>0 and alt<=4):
-    return alt,0
-  else:
-    return 0,5
 
-# Adiciona cod a lista de codigo, alt a lista de altura, pes a lista de peso e
-#imc_temp a lista de imc
-# entrada: cod:int, alt:float, pes:float, imc_temp:float
-# return: boolean = 1 - Sucesso/ 0 - Falha, erro
-#erro: 9 - '!ERRO! - Falha no cadastro verifique os dados de entrada'
-def cadastraClient( cod:int, alt:float, pes:float, imc_temp:float, codigo:list, altura:list, peso:list, imc:list):
-  try:
-    #add cliente a lista
-    codigo.append(cod)
-    altura.append(alt)
-    peso.append(pes)
-    imc.append(imc_temp)
-
-    return True,0
-  
-  except:
-    return False,9
 
 #  imprime uma tabela com o codigo dos usuarios mais alto, mais baixo, mais pesado,
 # mais leve, mais gordo e mais magro
@@ -87,19 +87,32 @@ def cadastraClient( cod:int, alt:float, pes:float, imc_temp:float, codigo:list, 
 # return: boolean, Erro
 # boolean: 1 - sucesso / 0 - falha
 # Erro: 8 - Falha na impressão dos valores     
-#            
-def printTable(codigo:list, altura:list, peso:list, imc:list):
-  try: 
+#       
+def printTable(clientes:list):
+  if(len(clientes)):  
     print('-'*50)
     print(f'{"":<13}{"Codigo":<5}{"Valor":>10}')
-    print(f'{"mais alto:":<13}{codigo[altura.index(max(altura))]:>4}{round(max(altura),2):>11}{"m":<12}')
-    print(f'{"mais baixo:":<13}{codigo[altura.index(min(altura))]:>4}{round(min(altura),2):>11}{"m":<12}')
-    print(f'{"mais pesado:":<13}{codigo[peso.index(max(peso))]:>4}{round(max(peso),2):>11}{"kg":<12}')
-    print(f'{"mais leve:":<13}{codigo[peso.index(min(peso))]:>4}{round(min(peso),2):>11}{"Kg":<12}')
-    print(f'{"mais gordo:":<13}{codigo[imc.index(max(imc))]:>4}{round(max(imc),2):>11}{"kg/m^2":<12}')
-    print(f'{"mais magro:":<13}{codigo[imc.index(min(imc))]:>4}{round(min(imc),2):>11}{"kg/m^2":<12}')
-    print(f'{"media altura:":<13}{round(sum(altura)/len(altura),2):>15}{"m":<12}')
-    print(f'{"media peso:":<13}{round(sum(peso)/len(peso),2):>15}{"kg":<12}')
-    return True
-  except ValueError:
-      return False,8
+    if(len(clientes) == 1):
+      print(f'{"mais alto:":<13}{clientes[0].codigo:>4}{clientes[0]._altura:>11.2f}{"m":<12}')
+      print(f'{"mais baixo:":<13}{clientes[0].codigo:>4}{clientes[0]._altura:>11.2f}{"m":<12}')
+      print(f'{"mais pesado:":<13}{clientes[0].codigo:>4}{clientes[0]._peso:>11.2f}{"kg":<12}')
+      print(f'{"mais leve:":<13}{clientes[0].codigo:>4}{clientes[0]._peso:>11.2f}{"Kg":<12}')
+      print(f'{"mais gordo:":<13}{clientes[0].codigo:>4}{clientes[0].imc:>11.2f}{"kg/m^2":<12}')
+      print(f'{"mais magro:":<13}{clientes[0].codigo:>4}{clientes[0].imc:>11.2f}{"kg/m^2":<12}')
+      print(f'{"media altura:":<13}{clientes[0]._altura:>15.2f}{"m":<12}')
+      print(f'{"media peso:":<13}{clientes[0]._peso:>15.2f}{"kg":<12}')
+
+    else:
+      clientes[[client.altura for client in clientes].index(max(client.altura for client in clientes))].codigo
+
+    print(f'{"mais alto:":<13}{clientes[[client.altura for client in clientes].index(max(client.altura for client in clientes))].codigo:>4}{max(client.altura for client in clientes):>11.2f}{"m":<12}')
+    print(f'{"mais baixo:":<13}{clientes[[client.altura for client in clientes].index(min(client.altura for client in clientes))].codigo:>4}{min(client.altura for client in clientes):>11.2f}{"m":<12}')
+    print(f'{"mais pesado:":<13}{clientes[[client.peso for client in clientes].index(max(client.peso for client in clientes))].codigo:>4}{max(client.peso for client in clientes):>11.2f}{"kg":<12}')
+    print(f'{"mais leve:":<13}{clientes[[client.peso for client in clientes].index(min(client.peso for client in clientes))].codigo:>4}{min(client.peso for client in clientes):>11.2f}{"Kg":<12}')
+    print(f'{"mais gordo:":<13}{clientes[[client.imc for client in clientes].index(max(client.imc for client in clientes))].codigo:>4}{max(client.imc for client in clientes):>11.2f}{"kg/m^2":<12}')
+    print(f'{"mais magro:":<13}{clientes[[client.imc for client in clientes].index(min(client.imc for client in clientes))].codigo:>4}{min(client.imc for client in clientes):>11.2f}{"kg/m^2":<12}')
+    print(f'{"media altura:":<13}{sum(client.altura for client in clientes)/len(clientes):>15.2f}{"m":<12}')
+    print(f'{"media peso:":<13}{sum(client.peso for client in clientes)/len(clientes):>15.2f}{"kg":<12}')
+    
+  else:
+    print('dados  insuficientes')
