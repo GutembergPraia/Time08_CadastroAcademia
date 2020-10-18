@@ -72,14 +72,10 @@ def validaNumFloat(num):
 # entrada: cliente:object, clientes:list
 # Return: True
 #         False 
-#max(node.y for node in path.nodes)
-#2 in testList
+#
 def verificaCod(cliente,clientes:list):
-  for client in clientes:
-    if(client.codigo == cliente.codigo):
-      raise ValueError(-2)
-
-
+  if(cliente.codigo in (client.codigo for client in clientes)):
+    raise ValueError(-2)
 
 #  imprime uma tabela com o codigo dos usuarios mais alto, mais baixo, mais pesado,
 # mais leve, mais gordo e mais magro
@@ -103,3 +99,26 @@ def printTable(clientes:list):
 
   else:
     print('dados  insuficientes')
+
+def cadastraClientes(clientes:list):
+  while True:
+    try:
+      if not 'cliente' in locals():
+        cliente = Cliente(input('Código do aluno ou 0 - Sair: '))
+        verificaCod(cliente,clientes)
+      if not hasattr(cliente, 'altura'):
+        cliente.altura = input('Altura do aluno em metros: ')
+      if not hasattr(cliente, 'peso'):
+        cliente.peso = input('Peso do aluno em kg: ')
+
+      clientes.append(cliente)
+      del cliente
+
+    except Exception as erro:
+      if(erro.args[0]==-1):
+        break
+      elif (erro.args[0]==-2):
+        del cliente
+        print('Cliente ja Cadastrado')
+      else:
+        print(erro)
